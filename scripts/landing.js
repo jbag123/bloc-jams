@@ -9,6 +9,7 @@ var animatePoints = function(points,pointsTitle,pointsSymbols) {
                 pointsTitle[index].style.borderBottom = "1px solid rgb(58,23,63)";
                 pointsSymbols[index].style.color = "rgb(233,50,117)";
         }
+        
         forEach(points, revealPoint);
         forEach(pointsTitle, revealPoint);
         forEach(pointsSymbols, revealPoint);
