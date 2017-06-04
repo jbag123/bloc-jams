@@ -63,6 +63,13 @@ var setCurrentAlbum = function(album) {
         }
 };
 
+var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+
 window.onload = function() {
         setCurrentAlbum(albumMarconi);
+
+        songListContainer.addEventListener('mouseoover', function(event) {
+                // #1
+                console.log(event.target);
+        });
 }
