@@ -28,6 +28,21 @@ var albumMarconi = {
         ]
 };
 
+var albumTrump = {
+        title: 'Covfefe',
+        artist: 'Donald J Trump',
+        label: 'Tower Records',
+        year: '2017',
+        albumArtUrl: 'https://www.askideas.com/media/48/Donald-Trump-With-Nest-Hair-Style-Very-Funny-Image.jpg',
+        songs: [
+        { title: 'Drain the swamp', duration: '1:33' },
+        { title: 'Great again', duration: '12:44' },
+        { title: 'Spray tan', duration: '5:22' },
+        { title: 'There\'s no problem down there', duration: '8:14' },
+        { title: 'Ivanka', duration: '0:15' }
+        ]
+};
+
 var createSongRow = function(songNumber, songName, songLength) {
         var template =
                   '<tr class="album-view-song-title">'
@@ -63,6 +78,16 @@ var setCurrentAlbum = function(album) {
         }
 };
 
-window.onload = function() {
-        setCurrentAlbum(albumMarconi);
-}
+// call first object
+setCurrentAlbum(albumPicasso);
+
+// store other objects in array
+var arrayObj = [];
+arrayObj.push(albumMarconi,albumTrump);
+
+// create event listener and loop over object array calling (or not) each object
+window.addEventListener("click", function() {
+                for (var i = 0; i < arrayObj.length; i++) {
+                        setCurrentAlbum(arrayObj[i]);
+                }
+        });
