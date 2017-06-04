@@ -83,11 +83,13 @@ setCurrentAlbum(albumPicasso);
 
 // store other objects in array
 var arrayObj = [];
-arrayObj.push(albumMarconi,albumTrump);
-
+arrayObj.push(albumPicasso,albumMarconi,albumTrump);
+var index = 1;
 // create event listener and loop over object array calling (or not) each object
 window.addEventListener("click", function() {
-                for (var i = 0; i < arrayObj.length; i++) {
-                        setCurrentAlbum(arrayObj[i]);
+                setCurrentAlbum(arrayObj[index]);
+                index++;
+                if (index == arrayObj.length) {
+                        index = 0;
                 }
         });
