@@ -1,18 +1,21 @@
 body.collection {
-        background: url(../assets/images/blurred_backgrounds/blur_bg_2.jpg) no-repeat fixed center center;
+        background-image: url(../assets/images/blurred_backgrounds/blur_bg_2.jpg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center center;
         background-size: cover;
 }
 
 .album-covers {
-        position: relative;
-}
+     position: relative;
+ }
 
 .collection-album-container {
-        position: relative;
-        margin-top: 30px;
-        margin-bottom: 20px;
-        text-align: center;
-}
+     position: relative;
+     margin-top: 30px;
+     margin-bottom: 20px;
+     text-align: center;
+ }
 
 .collection-album-container .caption {
         margin-top: 10px;
@@ -33,5 +36,5 @@ body.collection {
 }
 
 .collection-album-container img {
-        width 80%;
+        width: 80%;
 }
