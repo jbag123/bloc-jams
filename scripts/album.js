@@ -24,14 +24,13 @@ var createSongRow = function(songNumber, songName, songLength) {
                 	}
                         if (currentlyPlayingSongNumber !== songNumber) {
                 		$(this).html(pauseButtonTemplate);
-                                currentlyPlayingSongNumber = songNumber;
-                                currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+                                setSong(songNumber);
+                                setSong(currentAlbum.songs[songNumber - 1];);
                                 updatePlayerBarSong();
                 	} else if (currentlyPlayingSongNumber === songNumber) {
                 		$(this).html(playButtonTemplate);
                                 $('.main-controls .play-pause').html(playerBarPlayButton);
-                		currentlyPlayingSongNumber = null;
-                                currentSongFromAlbum = null;
+                                setSong(songNumber);
                         }
                 };
 
@@ -93,8 +92,8 @@ var nextSong = function() {
     var lastSongNumber = currentlyPlayingSongNumber;
 
     // Set a new current song
-    currentlyPlayingSongNumber = currentSong + 1;
-    currentSongFromAlbum = currentAlbum.songs[currentSong];
+    setSong(currentSong + 1);
+    setSong(currentAlbum.songs[currentSong];);
 
     // Update the Player Bar information
     updatePlayerBarSong();
@@ -117,8 +116,8 @@ var previousSong = function() {
 
     var lastSongNumber = currentlyPlayingSongNumber;
 
-    currentlyPlayingSongNumber = currentSong + 1;
-    currentSongFromAlbum = currentAlbum.songs[currentSong];
+    setSong(currentSong + 1);
+    setSong(currentAlbum.songs[currentSong];);
 
     updatePlayerBarSong();
 
@@ -141,8 +140,15 @@ var updatePlayerBarSong = function() {
         $playerArtistName.text(currentAlbum.artist);
 
         $('.main-controls .play-pause').html(playerBarPauseButton);
-
 }
+
+var setSong = function(songNumber) {
+        currentlyPlayingSongNumber = songNumber;
+        currentSongFromAlbum = songNumber;
+}
+ var getSongNumberCell = funciton(number) {
+         
+ }
 
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
