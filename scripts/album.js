@@ -9,22 +9,22 @@ var setSong = function(songNumber) {
         currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
                 formats: [ 'mp3' ],
                 preload: true
-            });            
-                setVolume(currentVolume);
-            };
+            });
+        setVolume(currentVolume);
+};
 
-            var setVolume = function(volume) {
-                if (currentSoundFile) {
-                    currentSoundFile.setVolume(volume);
-                }
-            };
-}
+var setVolume = function(volume) {
+        if (currentSoundFile) {
+                currentSoundFile.setVolume(volume);
+        }
+};
 
  var getSongNumberCell = function(number) {
          return  $('.song-item-number[data-song-number="' + currentlyPlayingSongNumber + '"]');
  }
 
 var createSongRow = function(songNumber, songName, songLength) {
+        // store a template to pass in song inforamtion
         var template =
                   '<tr class="album-view-song-item">'
                 +'      <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
@@ -67,7 +67,7 @@ var createSongRow = function(songNumber, songName, songLength) {
                                         currentSoundFile.pause();
                                 }
                         }
-                };
+        };
 
                 var onHover = function(event) {
                     var songNumberCell = $(this).find('.song-item-number');
@@ -91,19 +91,20 @@ var createSongRow = function(songNumber, songName, songLength) {
 
 var setCurrentAlbum = function(album) {
     currentAlbum = album;
+    // store the album information on album.html page in variablels
     var $albumTitle = $('.album-view-title');
     var $albumArtist = $('.album-view-artist');
     var $albumReleaseInfo = $('.album-view-release-info');
     var $albumImage = $('.album-cover-art');
     var $albumSongList = $('.album-view-song-list');
-
+    // set the information as album object properties
     $albumTitle.text(album.title);
     $albumArtist.text(album.artist);
     $albumReleaseInfo.text(album.year + ' ' + album.label);
     $albumImage.attr('src', album.albumArtUrl);
-
+    // clear the album-view-song-list element
     $albumSongList.empty();
-
+        // loop over the length of the album songs property and append a call to createSongRow in the album-view-song-list element
         for (var i = 0; i < album.songs.length; i++) {
                 var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
                 $albumSongList.append($newRow);
@@ -129,7 +130,7 @@ var nextSong = function() {
     // Set a new current song
     setSong(currentSong + 1);
     currentSoundFile.play();
-    setSong(currentAlbum.songs[currentSong];);
+    setSong(currentAlbum.songs[currentSong]);
 
     // Update the Player Bar information
     updatePlayerBarSong();
@@ -178,8 +179,10 @@ var updatePlayerBarSong = function() {
         $('.main-controls .play-pause').html(playerBarPauseButton);
 }
 
+// templates for play/pause button in the song rows
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
+// templates for play/pause button in the player
 var playerBarPlayButton = '<span class="ion-play"></span>';
 var playerBarPauseButton = '<span class="ion-pause"></span>';
 
@@ -192,6 +195,6 @@ var currentlyPlayingSongNumber = null;
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
 
-        $(document).ready(function() {
-                setCurrentAlbum(albumPicasso);
-        });
+$(document).ready(function() {
+        setCurrentAlbum(albumPicasso);
+});
