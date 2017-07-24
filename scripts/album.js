@@ -40,7 +40,7 @@ var createSongRow = function(songNumber, songName, songLength) {
                   //
                 +'      <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
                 +'      <td class="song-item-title">' + songName + '</td>'
-                +'      <td class="song-item-duration">' + songLength + '</td>'
+                +'      <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
                 +'</tr>'
                 ;
 
@@ -63,6 +63,12 @@ var createSongRow = function(songNumber, songName, songLength) {
                                 setSong(songNumber);
                                 currentSoundFile.play();
                                 updateSeekBarWhileSongPlays();
+
+                                var $volumeFill = $('.volume .fill');
+                                var $volumeThumb = $('.volume .thumb');
+                                $volumeFill.width(currentVolume + '%');
+                                $volumeThumb.css({left: currentVolume + '%'});
+
                 		$(this).html(pauseButtonTemplate);
                                 updatePlayerBarSong();
                 	} else if (currentlyPlayingSongNumber === songNumber) {
@@ -151,10 +157,10 @@ var setupSeekBars = function() {
         // divide offsetX by the width of the entire bar to calculate seekBarFillRatio
         var seekBarFillRatio = offsetX / barWidth;
         // check if the parent of the seek-bar is changing the volume or the song position
-        if ($seekBar.parent().attr('class') == 'seek-control') {
-                seek(seekBarFillRatio * currentSoundFile.getDuration());
-        } else  {
-                setVolume(seekBarFillRatio * 100);
+        if ($(this).parent().attr('class') == 'seek-control') {
+            seek(seekBarFillRatio * currentSoundFile.getDuration());
+        } else {
+            setVolume(seekBarFillRatio * 100);
         }
         // pass $(this) as the $seekBar argument and seekBarFillRatio for its eponymous argument to updateSeekBarPercentage()
         updateSeekPercentage($(this), seekBarFillRatio);
@@ -173,9 +179,9 @@ var setupSeekBars = function() {
                             var seekBarFillRatio = offsetX / barWidth;
                             // check if the parent of the seek-bar is changing the volume or the song position
                             if ($seekBar.parent().attr('class') == 'seek-control') {
-                                    seek(seekBarFillRatio);
+                                seek(seekBarFillRatio * currentSoundFile.getDuration());
                             } else {
-                                    setVolume(seekBarFillRatio * 100);
+                                setVolume(seekBarFillRatio);
                             }
                             // pass $(this) as the $seekBar argument and seekBarFillRatio for its eponymous argument to updateSeekBarPercentage()
                             updateSeekPercentage($seekBar, seekBarFillRatio);
@@ -195,7 +201,7 @@ var updateSeekBarWhileSongPlays = function() {
             // redefine seekBarFillRatio by getting the time of the current song
             var seekBarFillRatio = this.getTime() / this.getDuration();
             var $seekBar = $('.seek-control .seek-bar');
-
+            setCurrentTimeInPlayerBar(filterTimeCode(currentSoundFile.getTime()));
             updateSeekPercentage($seekBar, seekBarFillRatio);
         });
     }
@@ -286,8 +292,23 @@ var updatePlayerBarSong = function() {
                     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
 
                     $('.main-controls .play-pause').html(playerBarPauseButton);
+                     setTotalTimeInPlayerBar(filterTimeCode(currentSongFromAlbum.duration));
 };
 
+var setTotalTimeInPlayerBar = function(totalTime) {
+        $('.total-time').text(totalTime);
+}
+var setCurrentTimeInPlayerBar = function(currentTime) {
+        $('.current-time').text(currentTime);
+}
+
+var filterTimeCode = function(timeInSeconds) {
+  var parsedTime = parseFloat(timeInSeconds);
+  var minutes = Math.floor(parsedTime / 60);
+  var secs = parsedTime - minutes * 60;
+  var roundSecs = Math.floor(secs);
+  return minutes + ':' + roundSecs;
+}
 var togglePlayFromPlayerBar = function() {
         // if (currentSoundFile = null) {
         //     currentSoundFile.play();
