@@ -1,5 +1,5 @@
-
 // update all the variables that are keeping track of the current song
+// function to stop currentSoundFile
 var setSong = function(songNumber) {
         if (currentSoundFile) {
             currentSoundFile.stop();
@@ -165,33 +165,33 @@ var setupSeekBars = function() {
         // pass $(this) as the $seekBar argument and seekBarFillRatio for its eponymous argument to updateSeekBarPercentage()
         updateSeekPercentage($(this), seekBarFillRatio);
     });
-            // set a mousedown event listener to the thumb class within the seek-bar class
-            $seekBars.find('.thumb').mousedown(function(event) {
-                    // select parent of thumb class
-                    var $seekBar = $(this).parent();
+    // set a mousedown event listener to the thumb class within the seek-bar class
+    $seekBars.find('.thumb').mousedown(function(event) {
+            // select parent of thumb class
+            var $seekBar = $(this).parent();
 
-                    // set a namespace for the mousemove event on the thumb class with the bind event listener
-                    $(document).bind('mousemove.thumb', function(event) {
-                            // set the horizontal coordinate minus the offset of the seek bar
-                            var offsetX = event.pageX - $seekBar.offset().left;
-                            var barWidth = $seekBar.width();
-                            // divide offsetX by the width of the entire bar to calculate seekBarFillRatio
-                            var seekBarFillRatio = offsetX / barWidth;
-                            // check if the parent of the seek-bar is changing the volume or the song position
-                            if ($seekBar.parent().attr('class') == 'seek-control') {
-                                seek(seekBarFillRatio * currentSoundFile.getDuration());
-                            } else {
-                                setVolume(seekBarFillRatio);
-                            }
-                            // pass $(this) as the $seekBar argument and seekBarFillRatio for its eponymous argument to updateSeekBarPercentage()
-                            updateSeekPercentage($seekBar, seekBarFillRatio);
-                    });
-                    // bind mouseup to thumb class and unbind previous event listener
-                    $(document).bind('mouseup.thumb', function() {
-                        $(document).unbind('mousemove.thumb');
-                        $(document).unbind('mouseup.thumb');
-                    });
+            // set a namespace for the mousemove event on the thumb class with the bind event listener
+            $(document).bind('mousemove.thumb', function(event) {
+                    // set the horizontal coordinate minus the offset of the seek bar
+                    var offsetX = event.pageX - $seekBar.offset().left;
+                    var barWidth = $seekBar.width();
+                    // divide offsetX by the width of the entire bar to calculate seekBarFillRatio
+                    var seekBarFillRatio = offsetX / barWidth;
+                    // check if the parent of the seek-bar is changing the volume or the song position
+                    if ($seekBar.parent().attr('class') == 'seek-control') {
+                        seek(seekBarFillRatio * currentSoundFile.getDuration());
+                    } else {
+                        setVolume(seekBarFillRatio);
+                    }
+                    // pass $(this) as the $seekBar argument and seekBarFillRatio for its eponymous argument to updateSeekBarPercentage()
+                    updateSeekPercentage($seekBar, seekBarFillRatio);
             });
+            // bind mouseup to thumb class and unbind previous event listener
+            $(document).bind('mouseup.thumb', function() {
+                $(document).unbind('mousemove.thumb');
+                $(document).unbind('mouseup.thumb');
+            });
+    });
 };
 
 var updateSeekBarWhileSongPlays = function() {
