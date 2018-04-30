@@ -17,12 +17,12 @@ var buildCollectionItemTemplate = function() {
              return $(template);
          };
 
-         $(window).load(function() {
-                 var $collectionContainer = $('.album-covers');
-                $collectionContainer.empty();
+ $(window).load(function() {
+         var $collectionContainer = $('.album-covers');
+        $collectionContainer.empty();
 
-                for (var i = 0; i < 12; i++) {
-                        var $newThumbnail = buildCollectionItemTemplate();
-                        $collectionContainer.append($newThumbnail);
-                }
-        });
+        for (var i = 0; i < 12; i++) {
+                var $newThumbnail = buildCollectionItemTemplate();
+                $collectionContainer.append($newThumbnail);
+        }
+});

@@ -1,12 +1,16 @@
 // update all the variables that are keeping track of the current song
-// function to stop currentSoundFile
 var setSong = function(songNumber) {
+        // stop currentSoundFile if active
         if (currentSoundFile) {
             currentSoundFile.stop();
         }
 
+        // convert passed in value to number
         currentlyPlayingSongNumber = parseInt(songNumber);
+
+        //
         currentSongFromAlbum = currentAlbum.songs[songNumber - 1];
+
         // create a buzz object to hold the song playback functionality
         currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
                 formats: [ 'mp3' ],
@@ -17,27 +21,30 @@ var setSong = function(songNumber) {
         setVolume(currentVolume);
 };
 
+// function to set volume
 var setVolume = function(volume) {
         if (currentSoundFile) {
             currentSoundFile.setVolume(volume);
         }
 };
 
+//
 var seek = function(time) {
     if (currentSoundFile) {
         currentSoundFile.setTime(time);
     }
 }
 
- var getSongNumberCell = function(number) {
+var getSongNumberCell = function(number) {
          return  $('.song-item-number[data-song-number="' + number + '"]');
- }
+}
 
 // passes in song info into the song row template
 var createSongRow = function(songNumber, songName, songLength) {
+
+        //template to be passed in
         var template =
-                  '<tr class="album-view-song-item">'
-                  //
+                 '<tr class="album-view-song-item">'
                 +'      <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
                 +'      <td class="song-item-title">' + songName + '</td>'
                 +'      <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
@@ -111,7 +118,7 @@ var createSongRow = function(songNumber, songName, songLength) {
                   }
                 };
                 var $row = $(template);
-                // executre clickHandler when we click on song-item-number
+                // execue clickHandler when we click on song-item-number
                 $row.find('.song-item-number').click(clickHandler);
                 // execute onHover and offHover with an hover event listener
                 $row.hover(onHover, offHover);
@@ -136,20 +143,22 @@ var setCurrentAlbum = function(album) {
     $albumReleaseInfo.text(album.year + ' ' + album.label);
     $albumImage.attr('src', album.albumArtUrl);
 
-    // empty the parent album-view-song-list' element
+    // empty the parent album-view-song-list element
     $albumSongList.empty();
 
-    // loop over the number of album songs and append album songs and titles to the parent album-view-song-list' element
+    // loop over the number of album songs and append album songs and titles to the parent album-view-song-list element
         for (var i = 0; i < album.songs.length; i++) {
                 var $newRow = createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
                 $albumSongList.append($newRow);
     }
 };
 
+//
 var setupSeekBars = function() {
      // wrap location of both seek bars in a wrapped array
      var $seekBars = $('.player-bar .seek-bar');
 
+     // set up a click function for the seek-bar selector
     $seekBars.click(function(event) {
         // set the horizontal coordinate minus the offset of the seek bar
         var offsetX = event.pageX - $(this).offset().left;
@@ -158,13 +167,16 @@ var setupSeekBars = function() {
         var seekBarFillRatio = offsetX / barWidth;
         // check if the parent of the seek-bar is changing the volume or the song position
         if ($(this).parent().attr('class') == 'seek-control') {
+            // set the playback position in seconds based on current ratio of bar fill times total duration of song in seconds
             seek(seekBarFillRatio * currentSoundFile.getDuration());
         } else {
+            // set volume of song based on current ratio of bar fill times 100
             setVolume(seekBarFillRatio * 100);
         }
         // pass $(this) as the $seekBar argument and seekBarFillRatio for its eponymous argument to updateSeekBarPercentage()
         updateSeekPercentage($(this), seekBarFillRatio);
     });
+
     // set a mousedown event listener to the thumb class within the seek-bar class
     $seekBars.find('.thumb').mousedown(function(event) {
             // select parent of thumb class
@@ -198,7 +210,7 @@ var updateSeekBarWhileSongPlays = function() {
     if (currentSoundFile) {
         // bind timeupdate to currentSoundFile which fires during playback
         currentSoundFile.bind('timeupdate', function(event) {
-            // redefine seekBarFillRatio by getting the time of the current song
+            // redefine seekBarFillRatio by dividing the current playback time by the song duration
             var seekBarFillRatio = this.getTime() / this.getDuration();
             var $seekBar = $('.seek-control .seek-bar');
             setCurrentTimeInPlayerBar(filterTimeCode(currentSoundFile.getTime()));
@@ -207,6 +219,7 @@ var updateSeekBarWhileSongPlays = function() {
     }
 };
 
+// turn seek bar ratio to a percentage
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
         // turn value of width and left values for seek bar into percentage
         var offsetXPercent = seekBarFillRatio * 100;
@@ -216,7 +229,7 @@ var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
 
         // create a string for the percentage
         var percentageString = offsetXPercent + '%';
-        // convert the values of thw fill width and thumb position to that of the percentage
+        // convert the values of the fill width and thumb position to that of the percentage
         $seekBar.find('.fill').width(percentageString);
         $seekBar.find('.thumb').css({left: percentageString});
 };

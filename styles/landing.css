@@ -59,7 +59,7 @@ body.landing {
 .ion-music-note,
 .ion-radio-waves,
 .ion-iphone {
-    color: white;
+    color: #ff0000;
     -webkit-transition: color 1s linear;
     -moz-transition: color 1s linear;
     transition: color 1s linear;
